@@ -1,9 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using HuongDanLamDep.Models;
 using Microsoft.EntityFrameworkCore;
-
-namespace HuongDanLamDep.Data
+namespace WebHuongDanLamDep.Data
 {
-	public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext(options)
+	public class ApplicationDbContext : DbContext
 	{
+		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+			: base(options)
+		{
+		}
+
+		public DbSet<Category> Categories { get; set; }
 	}
 }
