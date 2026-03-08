@@ -53,19 +53,7 @@ namespace HuongDanLamDep.Areas.Admin.Controllers
         // POST: Admin/Categories/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CategoryId,Name")] Category category)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(category);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(category);
-        }
-
+       
         // GET: Admin/Categories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -81,11 +69,22 @@ namespace HuongDanLamDep.Areas.Admin.Controllers
             }
             return View(category);
         }
-
-        // POST: Admin/Categories/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Create([Bind("CategoryId,Name")] Category category)
+		{
+			if (ModelState.IsValid)
+			{
+				_context.Add(category);
+				await _context.SaveChangesAsync();
+				return RedirectToAction(nameof(Index));
+			}
+			return View(category);
+		}
+		// POST: Admin/Categories/Edit/5
+		// To protect from overposting attacks, enable the specific properties you want to bind to.
+		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+		[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("CategoryId,Name")] Category category)
         {
