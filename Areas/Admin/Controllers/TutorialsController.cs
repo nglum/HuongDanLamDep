@@ -20,15 +20,42 @@ namespace HuongDanLamDep.Areas.Admin.Controllers
             _context = context;
         }
 
-        // GET: Admin/Tutorials
-        public async Task<IActionResult> Index()
-        {
-            var applicationDbContext = _context.Tutorials.Include(t => t.Category);
-            return View(await applicationDbContext.ToListAsync());
-        }
+		// GET: Admin/Tutorials
+		public async Task<IActionResult> Index(string? search, int page = 1)
+		{
+			const int pageSize = 5;
 
-        // GET: Admin/Tutorials/Details/5
-        public async Task<IActionResult> Details(int? id)
+			var query = _context.Tutorials
+				.Include(t => t.Category)
+				.AsNoTracking()
+				.AsQueryable();
+
+			if (!string.IsNullOrWhiteSpace(search))
+			{
+				query = query.Where(t => t.Title.Contains(search));
+			}
+
+			var totalItems = await query.CountAsync();
+			var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+
+			if (page < 1) page = 1;
+			if (totalPages > 0 && page > totalPages) page = totalPages;
+
+			var data = await query
+				.OrderByDescending(t => t.TutorialId)
+				.Skip((page - 1) * pageSize)
+				.Take(pageSize)
+				.ToListAsync();
+
+			ViewBag.Search = search;
+			ViewBag.Page = page;
+			ViewBag.TotalPages = totalPages;
+
+			return View(data);
+		}
+
+		// GET: Admin/Tutorials/Details/5
+		public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {

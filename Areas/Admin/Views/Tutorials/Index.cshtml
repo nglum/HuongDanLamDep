@@ -6,6 +6,11 @@
 
 <h1>Index</h1>
 
+<form method="get" class="mb-3">
+    <input name="search" value="@ViewBag.Search" placeholder="Tìm theo tiêu đề..." />
+    <button type="submit">Tìm</button>
+</form>
+
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -45,3 +50,30 @@
 }
     </tbody>
 </table>
+@{
+    int currentPage = ViewBag.Page ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+    string search = ViewBag.Search as string ?? "";
+}
+
+<div class="mt-3">
+    @if (currentPage > 1)
+    {
+        <a asp-area="Admin"
+           asp-controller="Tutorials"
+           asp-action="Index"
+           asp-route-search="@search"
+           asp-route-page="@(currentPage - 1)">« Prev</a>
+    }
+
+    <span style="margin:0 10px;">Trang @currentPage / @totalPages</span>
+
+    @if (currentPage < totalPages)
+    {
+        <a asp-area="Admin"
+           asp-controller="Tutorials"
+           asp-action="Index"
+           asp-route-search="@search"
+           asp-route-page="@(currentPage + 1)">Next »</a>
+    }
+</div>
