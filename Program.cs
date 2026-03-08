@@ -1,7 +1,7 @@
 using HuongDanLamDep.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using WebHuongDanLamDep.Data;
+using HuongDanLamDep.Data;
 
 namespace HuongDanLamDep
 {

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebHuongDanLamDep.Controllers
+namespace HuongDanLamDep.Controllers
 {
 	public class HomeController : Controller
 	{
