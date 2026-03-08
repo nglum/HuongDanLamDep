@@ -20,14 +20,40 @@ namespace HuongDanLamDep.Areas.Admin.Controllers
             _context = context;
         }
 
-        // GET: Admin/Categories
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Categories.ToListAsync());
-        }
+		// GET: Admin/Categories
+		// GET: Admin/Categories
+		public async Task<IActionResult> Index(string? search, int page = 1)
+		{
+			const int pageSize = 5; // bạn có thể đổi 5/10 tùy thích
 
-        // GET: Admin/Categories/Details/5
-        public async Task<IActionResult> Details(int? id)
+			var query = _context.Categories.AsNoTracking();
+
+			if (!string.IsNullOrWhiteSpace(search))
+			{
+				query = query.Where(c => c.Name.Contains(search));
+			}
+
+			var totalItems = await query.CountAsync();
+			var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+
+			if (page < 1) page = 1;
+			if (totalPages > 0 && page > totalPages) page = totalPages;
+
+			var data = await query
+				.OrderByDescending(c => c.CategoryId)
+				.Skip((page - 1) * pageSize)
+				.Take(pageSize)
+				.ToListAsync();
+
+			ViewBag.Search = search;
+			ViewBag.Page = page;
+			ViewBag.TotalPages = totalPages;
+
+			return View(data);
+		}
+
+		// GET: Admin/Categories/Details/5
+		public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
