@@ -1,7 +1,6 @@
 using HuongDanLamDep.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using HuongDanLamDep.Data;
 
 namespace HuongDanLamDep
 {
@@ -11,19 +10,29 @@ namespace HuongDanLamDep
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
-			// Add services to the container.
-			var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+			// DB
+			var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+				?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
 			builder.Services.AddDbContext<ApplicationDbContext>(options =>
 				options.UseSqlServer(connectionString));
+
 			builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-			builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-				.AddEntityFrameworkStores<ApplicationDbContext>();
+			// ✅ Identity UI (có trang /Identity/Account/Login)
+			builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+			{
+				// đơn giản cho sinh viên
+				options.SignIn.RequireConfirmedAccount = false;
+			})
+			.AddEntityFrameworkStores<ApplicationDbContext>();
+
+			// MVC + RazorPages
 			builder.Services.AddControllersWithViews();
+			builder.Services.AddRazorPages(); // ✅ THIẾU CÁI NÀY SẼ 404 /Identity/...
 
 			var app = builder.Build();
 
-			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())
 			{
 				app.UseMigrationsEndPoint();
@@ -31,27 +40,29 @@ namespace HuongDanLamDep
 			else
 			{
 				app.UseExceptionHandler("/Home/Error");
-				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
 
 			app.UseHttpsRedirection();
+			app.UseStaticFiles(); // ✅ để CSS/JS chạy
+
 			app.UseRouting();
 
+			app.UseAuthentication(); // ✅ THIẾU CÁI NÀY Identity không hoạt động đúng
 			app.UseAuthorization();
 
-			app.MapStaticAssets();
-
+			// Areas
 			app.MapControllerRoute(
 				name: "areas",
 				pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
+			// Default
 			app.MapControllerRoute(
 				name: "default",
-				pattern: "{controller=Home}/{action=Index}/{id?}")
-				.WithStaticAssets();
-			app.MapRazorPages()
-			   .WithStaticAssets();
+				pattern: "{controller=Home}/{action=Index}/{id?}");
+
+			// ✅ Map Identity UI
+			app.MapRazorPages(); // ✅ THIẾU CÁI NÀY THÌ /Identity/... 404
 
 			app.Run();
 		}
