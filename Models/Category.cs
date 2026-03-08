@@ -6,7 +6,7 @@ namespace HuongDanLamDep.Models
 	{
 		public int CategoryId { get; set; }
 
-		[Required]
-		public string Name { get; set; }
+		[Required(ErrorMessage = "Bạn chưa nhập tên Category")]
+		public string Name { get; set; } = "";
 	}
 }

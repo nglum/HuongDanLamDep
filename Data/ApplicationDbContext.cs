@@ -1,6 +1,6 @@
 ﻿using HuongDanLamDep.Models;
 using Microsoft.EntityFrameworkCore;
-namespace WebHuongDanLamDep.Data
+namespace HuongDanLamDep.Data
 {
 	public class ApplicationDbContext : DbContext
 	{
