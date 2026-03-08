@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace WebHuongDanLamDep.Areas.Client.Controllers
+namespace HuongDanLamDep.Areas.Client.Controllers
 {
 	[Area("Client")]
 	public class HomeController : Controller
