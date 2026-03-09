@@ -66,10 +66,7 @@ namespace HuongDanLamDep
 				IdentitySeed.SeedAsync(scope.ServiceProvider).GetAwaiter().GetResult();
 			}
 			app.Run();
-			using (var scope = app.Services.CreateScope())
-			{
-				IdentitySeed.SeedAsync(scope.ServiceProvider).GetAwaiter().GetResult();
-			}
+
 		}
 	}
 }
