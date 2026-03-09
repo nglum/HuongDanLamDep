@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HuongDanLamDep.Models;
 using HuongDanLamDep.Data;
-
+using Microsoft.AspNetCore.Authorization;
 namespace HuongDanLamDep.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class CategoriesController : Controller
+    [Authorize(Roles = "Admin")]
+
+	public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
 

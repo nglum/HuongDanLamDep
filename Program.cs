@@ -61,7 +61,10 @@ namespace HuongDanLamDep
 				pattern: "{controller=Home}/{action=Index}/{id?}");
 
 			app.MapRazorPages(); // ✅ Identity UI endpoints
-
+			using (var scope = app.Services.CreateScope())
+			{
+				IdentitySeed.SeedAsync(scope.ServiceProvider).GetAwaiter().GetResult();
+			}
 			app.Run();
 		}
 	}

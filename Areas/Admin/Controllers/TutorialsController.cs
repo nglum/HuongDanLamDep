@@ -7,11 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HuongDanLamDep.Data;
 using HuongDanLamDep.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HuongDanLamDep.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class TutorialsController : Controller
+
+	[Authorize(Roles = "Admin")]
+
+	public class TutorialsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
