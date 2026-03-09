@@ -69,6 +69,7 @@ namespace HuongDanLamDep
 			{
 				IdentitySeed.SeedAsync(scope.ServiceProvider).GetAwaiter().GetResult();
 			}
+			builder.Services.AddScoped<HuongDanLamDep.Services.ITutorialPdfService, HuongDanLamDep.Services.TutorialPdfService>();
 			app.Run();
 
 		}
