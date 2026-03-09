@@ -19,17 +19,16 @@ namespace HuongDanLamDep
 
 			builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-			// ✅ Identity UI (có trang /Identity/Account/Login)
+			// ✅ CHỈ GIỮ 1 Identity (AddDefaultIdentity) + Roles
 			builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 			{
-				// đơn giản cho sinh viên
 				options.SignIn.RequireConfirmedAccount = false;
 			})
+			.AddRoles<IdentityRole>()
 			.AddEntityFrameworkStores<ApplicationDbContext>();
 
-			// MVC + RazorPages
 			builder.Services.AddControllersWithViews();
-			builder.Services.AddRazorPages(); // ✅ THIẾU CÁI NÀY SẼ 404 /Identity/...
+			builder.Services.AddRazorPages(); // ✅ để /Identity/... chạy
 
 			var app = builder.Build();
 
@@ -44,11 +43,11 @@ namespace HuongDanLamDep
 			}
 
 			app.UseHttpsRedirection();
-			app.UseStaticFiles(); // ✅ để CSS/JS chạy
+			app.UseStaticFiles();
 
 			app.UseRouting();
 
-			app.UseAuthentication(); // ✅ THIẾU CÁI NÀY Identity không hoạt động đúng
+			app.UseAuthentication(); // ✅ cực quan trọng
 			app.UseAuthorization();
 
 			// Areas
@@ -61,8 +60,7 @@ namespace HuongDanLamDep
 				name: "default",
 				pattern: "{controller=Home}/{action=Index}/{id?}");
 
-			// ✅ Map Identity UI
-			app.MapRazorPages(); // ✅ THIẾU CÁI NÀY THÌ /Identity/... 404
+			app.MapRazorPages(); // ✅ Identity UI endpoints
 
 			app.Run();
 		}
