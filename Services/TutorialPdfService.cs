@@ -34,10 +34,7 @@ namespace HuongDanLamDep.Services
 					{
 						col.Spacing(8);
 						col.Item().Text("Nội dung").SemiBold().FontSize(13);
-
-						// Nội dung dài: cho xuống dòng
-						col.Item().Text(tutorial.Content ?? "").FontSize(12);
-
+						col.Item().Text(tutorial.Content ?? "");
 						col.Item().PaddingTop(10).LineHorizontal(1);
 						col.Item().Text($"Xuất lúc: {DateTime.Now:dd/MM/yyyy HH:mm}");
 					});

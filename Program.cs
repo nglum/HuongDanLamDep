@@ -1,78 +1,69 @@
 using HuongDanLamDep.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Packaging;
-using QuestPDF.Infrastructure;
-using LicenseType = QuestPDF.Infrastructure.LicenseType;
-using HuongDanLamDep.Services;
 
-QuestPDF.Settings.License = LicenseType.Community;
-namespace HuongDanLamDep
+var builder = WebApplication.CreateBuilder(args);
+
+// DB
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+	?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+	options.UseSqlServer(connectionString));
+
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+// Identity + Roles (đơn giản cho sinh viên)
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
-	public class Program
-	{
-		public static void Main(string[] args)
-		{
-			var builder = WebApplication.CreateBuilder(args);
-			QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
-			// DB
-			var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-				?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+	options.SignIn.RequireConfirmedAccount = false;
+})
+.AddRoles<IdentityRole>()
+.AddEntityFrameworkStores<ApplicationDbContext>();
 
-			builder.Services.AddDbContext<ApplicationDbContext>(options =>
-				options.UseSqlServer(connectionString));
+// MVC + Razor Pages (Identity UI)
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 
-			builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+// (KHI NÀO LÀM PDF/EXCEL THÌ ĐĂNG KÝ SERVICES Ở ĐÂY - TRƯỚC Build)
+// builder.Services.AddScoped<...>();
 
-			// ✅ CHỈ GIỮ 1 Identity (AddDefaultIdentity) + Roles
-			builder.Services.AddDefaultIdentity<IdentityUser>(options =>
-			{
-				options.SignIn.RequireConfirmedAccount = false;
-			})
-			.AddRoles<IdentityRole>()
-			.AddEntityFrameworkStores<ApplicationDbContext>();
+var app = builder.Build();
 
-			builder.Services.AddControllersWithViews();
-			builder.Services.AddRazorPages(); // ✅ để /Identity/... chạy
-
-			var app = builder.Build();
-
-			if (app.Environment.IsDevelopment())
-			{
-				app.UseMigrationsEndPoint();
-			}
-			else
-			{
-				app.UseExceptionHandler("/Home/Error");
-				app.UseHsts();
-			}
-
-			app.UseHttpsRedirection();
-			app.UseStaticFiles();
-
-			app.UseRouting();
-
-			app.UseAuthentication(); // ✅ cực quan trọng
-			app.UseAuthorization();
-
-			// Areas
-			app.MapControllerRoute(
-				name: "areas",
-				pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-
-			// Default
-			app.MapControllerRoute(
-				name: "default",
-				pattern: "{controller=Home}/{action=Index}/{id?}");
-
-			app.MapRazorPages(); // ✅ Identity UI endpoints
-			using (var scope = app.Services.CreateScope())
-			{
-				IdentitySeed.SeedAsync(scope.ServiceProvider).GetAwaiter().GetResult();
-			}
-			builder.Services.AddScoped<HuongDanLamDep.Services.ITutorialPdfService, HuongDanLamDep.Services.TutorialPdfService>();
-			app.Run();
-
-		}
-	}
+// Pipeline
+if (app.Environment.IsDevelopment())
+{
+	app.UseMigrationsEndPoint();
 }
+else
+{
+	app.UseExceptionHandler("/Home/Error");
+	app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+// Routes
+app.MapControllerRoute(
+	name: "areas",
+	pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+	name: "default",
+	pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapRazorPages();
+
+// Seed roles/admin (nếu bạn có file Data/IdentitySeed.cs)
+using (var scope = app.Services.CreateScope())
+{
+	IdentitySeed.SeedAsync(scope.ServiceProvider).GetAwaiter().GetResult();
+}
+
+app.Run();
