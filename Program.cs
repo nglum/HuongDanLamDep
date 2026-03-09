@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using NuGet.Packaging;
 using QuestPDF.Infrastructure;
 using LicenseType = QuestPDF.Infrastructure.LicenseType;
+using HuongDanLamDep.Services;
 
 QuestPDF.Settings.License = LicenseType.Community;
 namespace HuongDanLamDep
@@ -13,7 +14,7 @@ namespace HuongDanLamDep
 		public static void Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
-
+			QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 			// DB
 			var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
 				?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
