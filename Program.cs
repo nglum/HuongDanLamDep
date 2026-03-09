@@ -1,7 +1,11 @@
 using HuongDanLamDep.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging;
+using QuestPDF.Infrastructure;
+using LicenseType = QuestPDF.Infrastructure.LicenseType;
 
+QuestPDF.Settings.License = LicenseType.Community;
 namespace HuongDanLamDep
 {
 	public class Program
