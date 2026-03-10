@@ -19,14 +19,11 @@ namespace HuongDanLamDep.Areas.Admin.Controllers
 		private readonly ITutorialReportPdfService _pdf;
 		private readonly ITutorialReportExcelService _excel;
 
-		public CategoriesController(
-			ApplicationDbContext context,
-			ITutorialReportPdfService pdf,
-			ITutorialReportExcelService excel)
+		public CategoriesController(ApplicationDbContext context, ITutorialReportPdfService pdf)
 		{
 			_context = context;
 			_pdf = pdf;
-			_excel = excel;
+			
 		}
 
 		// GET: Admin/Categories

@@ -1,4 +1,5 @@
 using HuongDanLamDep.Data;
+using HuongDanLamDep.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
@@ -24,7 +25,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 // MVC + Razor Pages (Identity UI)
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
-
+builder.Services.AddScoped<ITutorialReportPdfService, TutorialReportPdfService>();
 // (KHI NÀO LÀM PDF/EXCEL THÌ ĐĂNG KÝ SERVICES Ở ĐÂY - TRƯỚC Build)
 // builder.Services.AddScoped<...>();
 builder.Services.AddScoped<HuongDanLamDep.Services.ITutorialReportPdfService, HuongDanLamDep.Services.TutorialReportPdfService>();
