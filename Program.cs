@@ -29,7 +29,7 @@ builder.Services.AddRazorPages();
 // builder.Services.AddScoped<...>();
 
 var app = builder.Build();
-
+builder.Services.AddScoped<HuongDanLamDep.Services.ITutorialReportPdfService, HuongDanLamDep.Services.TutorialReportPdfService>();
 // Pipeline
 if (app.Environment.IsDevelopment())
 {
