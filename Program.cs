@@ -27,9 +27,9 @@ builder.Services.AddRazorPages();
 
 // (KHI NÀO LÀM PDF/EXCEL THÌ ĐĂNG KÝ SERVICES Ở ĐÂY - TRƯỚC Build)
 // builder.Services.AddScoped<...>();
-
-var app = builder.Build();
 builder.Services.AddScoped<HuongDanLamDep.Services.ITutorialReportPdfService, HuongDanLamDep.Services.TutorialReportPdfService>();
+var app = builder.Build();
+
 // Pipeline
 if (app.Environment.IsDevelopment())
 {

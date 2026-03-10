@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using HuongDanLamDep.Models;
 using HuongDanLamDep.Data;
 using Microsoft.AspNetCore.Authorization;
+using HuongDanLamDep.Services;
 namespace HuongDanLamDep.Areas.Admin.Controllers
 {
     [Area("Admin")]
