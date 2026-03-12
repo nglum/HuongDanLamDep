@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-
+using Microsoft.EntityFrameworkCore;
+using HuongDanLamDep.Data;
 
 namespace HuongDanLamDep.Areas.Admin.Controllers
 {
@@ -8,9 +9,19 @@ namespace HuongDanLamDep.Areas.Admin.Controllers
 	[Authorize(Roles = "Admin")]
 	public class HomeController : Controller
 	{
-		public IActionResult Index()
+		private readonly ApplicationDbContext _context;
+
+		public HomeController(ApplicationDbContext context)
 		{
-			ViewData["Title"] = "Admin Dashboard";
+			_context = context;
+		}
+
+		public async Task<IActionResult> Index()
+		{
+			ViewBag.CategoryCount = await _context.Categories.CountAsync();
+			ViewBag.TutorialCount = await _context.Tutorials.CountAsync();
+			ViewBag.TagCount = await _context.Tags.CountAsync();
+
 			return View();
 		}
 	}
