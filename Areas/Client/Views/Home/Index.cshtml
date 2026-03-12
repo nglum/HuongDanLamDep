@@ -12,36 +12,77 @@
             <div class="col-lg-7">
                 <h1 class="fw-bold mb-3">Web Hướng Dẫn Làm Đẹp</h1>
                 <p class="lead text-muted mb-4">
-                    Chia sẻ các bài hướng dẫn chăm sóc da, trang điểm, chăm sóc tóc và những mẹo làm đẹp đơn giản hằng ngày.
+                    Chia sẻ các bài hướng dẫn chăm sóc da, trang điểm, chăm sóc tóc
+                    và những mẹo làm đẹp đơn giản hằng ngày.
                 </p>
                 <a asp-area="Client" asp-controller="Home" asp-action="Index" class="btn btn-primary">
                     Khám phá ngay
                 </a>
             </div>
+
             <div class="col-lg-5 text-center">
                 <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800"
                      class="img-fluid rounded shadow-sm"
-                     alt="Beauty Banner" />
+                     alt="Banner làm đẹp" />
             </div>
         </div>
     </div>
 </section>
 
-<!-- Categories -->
+<!-- Bài viết mới nhất -->
 <section class="py-5">
     <div class="container">
         <div class="d-flex align-items-center justify-content-between mb-4">
-            <h2 class="h4 mb-0">Danh mục làm đẹp</h2>
+            <h2 class="h4 mb-0">Bài viết mới nhất</h2>
         </div>
 
-        <div class="row g-3">
-            @foreach (var item in Model.Categories)
+        <div class="row g-4">
+            @if (Model.LatestTutorials != null && Model.LatestTutorials.Any())
             {
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="card h-100 shadow-sm border-0">
-                        <div class="card-body text-center">
-                            <h5 class="card-title mb-0">@item.Name</h5>
+                @foreach (var item in Model.LatestTutorials)
+                {
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm border-0">
+                            <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=800"
+                                 class="card-img-top"
+                                 alt="Tutorial image" />
+
+                            <div class="card-body d-flex flex-column">
+                                <div class="small text-muted mb-2">
+                                    @(item.Category?.Name ?? "Chưa có danh mục")
+                                </div>
+
+                                <h5 class="card-title">@item.Title</h5>
+
+                                <p class="card-text text-muted">
+                                    @{
+                                        var content = item.Content ?? "";
+                                        var shortText = content.Length > 120
+                                        ? content.Substring(0, 120) + "..."
+                                        : content;
+                                    }
+                                    @shortText
+                                </p>
+
+                                <div class="mt-auto">
+                                    <a asp-area="Client"
+                                       asp-controller="Tutorials"
+                                       asp-action="Details"
+                                       asp-route-id="@item.TutorialId"
+                                       class="btn btn-outline-primary btn-sm">
+                                        Xem chi tiết
+                                    </a>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        Chưa có bài viết nào để hiển thị.
                     </div>
                 </div>
             }
@@ -49,48 +90,32 @@
     </div>
 </section>
 
-<!-- Latest Tutorials -->
+<!-- Danh mục làm đẹp -->
 <section class="pb-5">
     <div class="container">
         <div class="d-flex align-items-center justify-content-between mb-4">
-            <h2 class="h4 mb-0">Bài viết mới nhất</h2>
+            <h2 class="h4 mb-0">Danh mục làm đẹp</h2>
         </div>
 
-        <div class="row g-4">
-            @foreach (var item in Model.LatestTutorials)
+        <div class="row g-3">
+            @if (Model.Categories != null && Model.Categories.Any())
             {
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="card h-100 shadow-sm border-0">
-                        <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=800"
-                             class="card-img-top"
-                             style="height:220px; object-fit:cover;"
-                             alt="Tutorial Image" />
-
-                        <div class="card-body d-flex flex-column">
-                            <div class="small text-muted mb-2">
-                                @(item.Category?.Name ?? "Chưa có danh mục")
-                            </div>
-
-                            <h5 class="card-title">@item.Title</h5>
-
-                            <p class="card-text text-muted">
-                                @{
-                                    var content = item.Content ?? "";
-                                    var shortText = content.Length > 120 ? content.Substring(0, 120) + "..." : content;
-                                }
-                                @shortText
-                            </p>
-
-                            <div class="mt-auto">
-                                <a asp-area="Client"
-                                   asp-controller="Tutorials"
-                                   asp-action="Details"
-                                   asp-route-id="@item.TutorialId"
-                                   class="btn btn-outline-primary btn-sm">
-                                    Xem chi tiết
-                                </a>
+                @foreach (var item in Model.Categories)
+                {
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="card h-100 shadow-sm border-0">
+                            <div class="card-body text-center">
+                                <h5 class="card-title mb-0">@item.Name</h5>
                             </div>
                         </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        Chưa có danh mục nào để hiển thị.
                     </div>
                 </div>
             }

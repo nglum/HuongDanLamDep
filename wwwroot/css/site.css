@@ -1,31 +1,217 @@
-html {
-  font-size: 14px;
+/* =========================
+   BEAUTY WEBSITE THEME
+   ========================= */
+:root {
+    --primary: #d96c8a;
+    --primary-dark: #b84d6b;
+    --secondary: #f8d7df;
+    --bg-soft: #fff7f9;
+    --bg-cream: #fffaf5;
+    --text-main: #5a3d45;
+    --text-muted: #8b6b73;
+    --border-soft: #f0d6dd;
+    --shadow-soft: 0 4px 16px rgba(217, 108, 138, 0.08);
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+/* =========================
+   GLOBAL LAYOUT FIX
+   ========================= */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-soft);
+    color: var(--text-main);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-  margin-bottom: 60px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+main {
+    flex: 1 0 auto;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+/* Footer fix: KHÔNG cho đè nội dung */
+.footer {
+    position: static !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    width: 100%;
+    white-space: nowrap;
+    line-height: normal !important;
+    background-color: #ffffff;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-soft);
+    margin-top: auto;
+}
+
+/* =========================
+   NAVBAR
+   ========================= */
+.navbar {
+    background: linear-gradient(90deg, #fffaf5, #fdeef2) !important;
+    border-bottom: 1px solid var(--border-soft) !important;
+}
+
+.navbar-brand,
+.nav-link {
+    color: var(--text-main) !important;
+    font-weight: 500;
+}
+
+    .navbar-brand:hover,
+    .nav-link:hover {
+        color: var(--primary-dark) !important;
+    }
+
+/* =========================
+   HEADINGS / TEXT
+   ========================= */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-main);
+    font-weight: 700;
+}
+
+p,
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+/* =========================
+   LINKS
+   ========================= */
+a {
+    color: var(--primary-dark);
+    text-decoration: none;
+}
+
+    a:hover {
+        color: var(--primary);
+        text-decoration: underline;
+    }
+
+/* =========================
+   BUTTONS
+   ========================= */
+.btn-primary {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+    border-radius: 12px;
+}
+
+    .btn-primary:hover {
+        background-color: var(--primary-dark) !important;
+        border-color: var(--primary-dark) !important;
+    }
+
+.btn-outline-primary {
+    color: var(--primary-dark) !important;
+    border-color: var(--primary) !important;
+    border-radius: 12px;
+}
+
+    .btn-outline-primary:hover {
+        background-color: var(--primary) !important;
+        color: #fff !important;
+    }
+
+/* =========================
+   CARDS
+   ========================= */
+.card {
+    border: 1px solid var(--border-soft);
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+    background-color: #fff;
+}
+
+.card-title {
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.card-text {
+    color: var(--text-muted);
+}
+
+/* =========================
+   FORMS
+   ========================= */
+.form-control,
+.form-select {
+    border-radius: 12px;
+    border: 1px solid var(--border-soft);
+}
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 0.15rem rgba(217, 108, 138, 0.15);
+    }
+
+/* =========================
+   TABLES
+   ========================= */
+.table {
+    background-color: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+    .table thead {
+        background-color: #fdeef2;
+        color: var(--text-main);
+    }
+
+    .table tbody tr:hover {
+        background-color: #fff7f9;
+    }
+
+/* =========================
+   ALERTS
+   ========================= */
+.alert-success {
+    background-color: #f3d9e1;
+    border-color: #eab8c6;
+    color: #6f3b4b;
+}
+
+.alert-danger {
+    background-color: #fde2e2;
+    border-color: #f5b7b7;
+    color: #8b3e3e;
+}
+
+.alert-info {
+    background-color: #fdf2f5;
+    border-color: #f3d5de;
+    color: #7b4c59;
+}
+
+/* =========================
+   IMAGES
+   ========================= */
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+}
+
+/* =========================
+   SECTIONS
+   ========================= */
+section {
+    margin-bottom: 30px;
+}
+
+/* =========================
+   UTILITIES
+   ========================= */
+.box-shadow {
+    box-shadow: var(--shadow-soft);
 }

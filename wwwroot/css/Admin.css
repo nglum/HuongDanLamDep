@@ -1,14 +1,87 @@
-﻿/* Admin look & feel */
+﻿:root {
+	--admin-primary: #c45b7a;
+	--admin-dark: #7b3b4d;
+	--admin-soft: #fff5f7;
+	--admin-border: #edd2d9;
+	--admin-text: #4d2f38;
+}
+
+body {
+	background-color: var(--admin-soft);
+	color: var(--admin-text);
+}
+
+/* Topbar */
+.navbar-dark.bg-dark {
+	background: linear-gradient(90deg, #7b3b4d, #c45b7a) !important;
+}
+
+/* Sidebar */
+aside {
+	background-color: white !important;
+}
+
 .list-group-item {
 	border: 0;
-	border-radius: 10px;
+	border-radius: 12px;
 	margin-bottom: 6px;
+	color: var(--admin-text);
+	font-weight: 500;
 }
 
-	.list-group-item:hover {
-		background: #f3f6ff;
+	.list-group-item:hover,
+	.list-group-item.active {
+		background-color: #fdeef2 !important;
+		color: var(--admin-dark) !important;
 	}
 
-.min-vh-100 {
-	min-height: 100vh;
+/* Cards */
+.card {
+	border: 1px solid var(--admin-border);
+	border-radius: 16px;
+	box-shadow: 0 4px 16px rgba(196, 91, 122, 0.08);
 }
+
+/* Buttons */
+.btn-primary {
+	background-color: var(--admin-primary) !important;
+	border-color: var(--admin-primary) !important;
+}
+
+	.btn-primary:hover {
+		background-color: var(--admin-dark) !important;
+		border-color: var(--admin-dark) !important;
+	}
+
+.btn-outline-primary {
+	color: var(--admin-dark) !important;
+	border-color: var(--admin-primary) !important;
+}
+
+	.btn-outline-primary:hover {
+		background-color: var(--admin-primary) !important;
+		color: white !important;
+	}
+
+/* Tables */
+.table thead {
+	background-color: #fdeef2;
+	color: var(--admin-text);
+}
+
+.table tbody tr:hover {
+	background-color: #fff7f9;
+}
+
+/* Forms */
+.form-control,
+.form-select {
+	border-radius: 12px;
+	border: 1px solid var(--admin-border);
+}
+
+	.form-control:focus,
+	.form-select:focus {
+		border-color: var(--admin-primary);
+		box-shadow: 0 0 0 0.15rem rgba(196, 91, 122, 0.15);
+	}
