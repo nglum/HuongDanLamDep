@@ -1,5 +1,99 @@
-﻿@{
+﻿@model HuongDanLamDep.ViewModels.ClientHomeVM
+
+@{
+    ViewData["Title"] = "Trang chủ";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Trang Client</h2>
+<!-- Banner -->
+<section class="py-5 bg-light border-bottom">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <h1 class="fw-bold mb-3">Web Hướng Dẫn Làm Đẹp</h1>
+                <p class="lead text-muted mb-4">
+                    Chia sẻ các bài hướng dẫn chăm sóc da, trang điểm, chăm sóc tóc và những mẹo làm đẹp đơn giản hằng ngày.
+                </p>
+                <a asp-area="Client" asp-controller="Home" asp-action="Index" class="btn btn-primary">
+                    Khám phá ngay
+                </a>
+            </div>
+            <div class="col-lg-5 text-center">
+                <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800"
+                     class="img-fluid rounded shadow-sm"
+                     alt="Beauty Banner" />
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Categories -->
+<section class="py-5">
+    <div class="container">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h2 class="h4 mb-0">Danh mục làm đẹp</h2>
+        </div>
+
+        <div class="row g-3">
+            @foreach (var item in Model.Categories)
+            {
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body text-center">
+                            <h5 class="card-title mb-0">@item.Name</h5>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Latest Tutorials -->
+<section class="pb-5">
+    <div class="container">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h2 class="h4 mb-0">Bài viết mới nhất</h2>
+        </div>
+
+        <div class="row g-4">
+            @foreach (var item in Model.LatestTutorials)
+            {
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=800"
+                             class="card-img-top"
+                             style="height:220px; object-fit:cover;"
+                             alt="Tutorial Image" />
+
+                        <div class="card-body d-flex flex-column">
+                            <div class="small text-muted mb-2">
+                                @(item.Category?.Name ?? "Chưa có danh mục")
+                            </div>
+
+                            <h5 class="card-title">@item.Title</h5>
+
+                            <p class="card-text text-muted">
+                                @{
+                                    var content = item.Content ?? "";
+                                    var shortText = content.Length > 120 ? content.Substring(0, 120) + "..." : content;
+                                }
+                                @shortText
+                            </p>
+
+                            <div class="mt-auto">
+                                <a asp-area="Client"
+                                   asp-controller="Tutorials"
+                                   asp-action="Details"
+                                   asp-route-id="@item.TutorialId"
+                                   class="btn btn-outline-primary btn-sm">
+                                    Xem chi tiết
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
