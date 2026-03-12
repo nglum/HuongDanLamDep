@@ -1,0 +1,98 @@
+﻿@model IEnumerable<HuongDanLamDep.Models.Tutorial>
+@using HuongDanLamDep.Models
+
+@{
+    ViewData["Title"] = "Bài viết làm đẹp";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var categories = ViewBag.Categories as List<Category>;
+    int? currentCategoryId = ViewBag.CurrentCategoryId as int?;
+    string search = ViewBag.Search as string ?? "";
+}
+
+<section class="py-4">
+    <div class="container">
+        <h1 class="mb-4">Bài viết làm đẹp</h1>
+
+        <!-- Bộ lọc -->
+        <form method="get" class="row g-3 mb-4">
+            <div class="col-md-4">
+                <input type="text" name="search" value="@search" class="form-control" placeholder="Tìm theo tiêu đề..." />
+            </div>
+
+            <div class="col-md-4">
+                <select name="categoryId" class="form-select">
+                    <option value="">Tất cả danh mục</option>
+                    @if (categories != null)
+                    {
+                        foreach (var c in categories)
+                        {
+                            if (currentCategoryId == c.CategoryId)
+                            {
+                                <option value="@c.CategoryId" selected>@c.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@c.CategoryId">@c.Name</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary">Lọc bài viết</button>
+            </div>
+        </form>
+
+        <!-- Danh sách tutorial -->
+        <div class="row g-4">
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm border-0">
+                            <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=800"
+                                 class="card-img-top"
+                                 alt="Tutorial image" />
+
+                            <div class="card-body d-flex flex-column">
+                                <div class="small text-muted mb-2">
+                                    @(item.Category?.Name ?? "Chưa có danh mục")
+                                </div>
+
+                                <h5 class="card-title">@item.Title</h5>
+
+                                <p class="card-text text-muted">
+                                    @{
+                                        var content = item.Content ?? "";
+                                        var shortText = content.Length > 120 ? content.Substring(0, 120) + "..." : content;
+                                    }
+                                    @shortText
+                                </p>
+
+                                <div class="mt-auto">
+                                    <a asp-area="Client"
+                                       asp-controller="Tutorials"
+                                       asp-action="Details"
+                                       asp-route-id="@item.TutorialId"
+                                       class="btn btn-outline-primary btn-sm">
+                                        Xem chi tiết
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12">
+                    <div class="alert alert-info">Chưa có bài viết nào để hiển thị.</div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+``
