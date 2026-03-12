@@ -1,0 +1,14 @@
+﻿/* Admin look & feel */
+.list-group-item {
+	border: 0;
+	border-radius: 10px;
+	margin-bottom: 6px;
+}
+
+	.list-group-item:hover {
+		background: #f3f6ff;
+	}
+
+.min-vh-100 {
+	min-height: 100vh;
+}
