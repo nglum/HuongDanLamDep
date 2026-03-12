@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Danh mục thể loại</h1>
 
 <form method="get" class="mb-3">
     <input name="search" value="@ViewBag.Search" placeholder="Tìm theo tiêu đề..." />
@@ -12,7 +12,7 @@
 </form>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Tạo bài viết mới</a>
 </p>
 <table class="table">
     <thead>
@@ -35,16 +35,17 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
+            <td style="white-space: pre-line; max-width: 350px; word-break: break-word;">
+                    @item.Content
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Category.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.TutorialId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TutorialId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.TutorialId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.TutorialId">Sửa bài viết</a> 
+                <a asp-action="Details" asp-route-id="@item.TutorialId">Chi tiết bài viết</a> 
+                    <a asp-action="ExportPdf" asp-route-id="@item.TutorialId">Xuất file PDF</a>
+                <a asp-action="Delete" asp-route-id="@item.TutorialId">Xóa bài viết</a>
             </td>
         </tr>
 }

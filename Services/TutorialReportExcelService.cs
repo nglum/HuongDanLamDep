@@ -1,81 +1,75 @@
-﻿using ClosedXML.Excel;
-using HuongDanLamDep.Models;
+﻿using HuongDanLamDep.Models;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 
 namespace HuongDanLamDep.Services
 {
-	public interface ITutorialReportExcelService
+	public interface ITutorialPdfService
 	{
-		byte[] GenerateCategoryReport(string categoryName, IList<Tutorial> tutorials);
+		byte[] GenerateTutorialPdf(Tutorial tutorial);
 	}
 
-	public class TutorialReportExcelService : ITutorialReportExcelService
+	public class TutorialPdfService : ITutorialPdfService
 	{
-		public byte[] GenerateCategoryReport(string categoryName, IList<Tutorial> tutorials)
+		public byte[] GenerateTutorialPdf(Tutorial tutorial)
 		{
-			using var wb = new XLWorkbook();
-			var ws = wb.Worksheets.Add("Tutorials");
-
-			// Title
-			ws.Cell(1, 1).Value = "BÁO CÁO TUTORIAL THEO CATEGORY";
-			ws.Range(1, 1, 1, 3).Merge().Style.Font.Bold = true;
-			ws.Cell(1, 1).Style.Font.FontSize = 14;
-
-			// Meta
-			ws.Cell(2, 1).Value = "Category:";
-			ws.Cell(2, 2).Value = categoryName;
-
-			ws.Cell(3, 1).Value = "Tổng số:";
-			ws.Cell(3, 2).Value = tutorials.Count;
-
-			// Header (row 5)
-			ws.Cell(5, 1).Value = "STT";
-			ws.Cell(5, 2).Value = "Tiêu đề";
-			ws.Cell(5, 3).Value = "Mô tả ngắn";
-
-			var header = ws.Range(5, 1, 5, 3);
-			header.Style.Font.Bold = true;
-			header.Style.Fill.BackgroundColor = XLColor.LightGray;
-			header.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-			header.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-			header.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
-
-			// Data
-			int row = 6;
-			for (int i = 0; i < tutorials.Count; i++)
+			var document = Document.Create(container =>
 			{
-				var t = tutorials[i];
+				container.Page(page =>
+				{
+					page.Size(PageSizes.A4);
+					page.Margin(25);
+					page.PageColor(Colors.White);
+					page.DefaultTextStyle(x => x.FontSize(12));
 
-				ws.Cell(row, 1).Value = i + 1;
-				ws.Cell(row, 2).Value = t.Title ?? "";
-				ws.Cell(row, 3).Value = Shorten(t.Content, 120);
+					// Header
+					page.Header().Column(col =>
+					{
+						col.Spacing(6);
 
-				row++;
-			}
+						col.Item().Text("LUMBEAUTY")
+							.FontSize(18)
+							.Bold()
+							.FontColor(Colors.Pink.Darken2);
 
-			// Border for data region
-			if (row > 6)
-			{
-				var dataRange = ws.Range(6, 1, row - 1, 3);
-				dataRange.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-				dataRange.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
-				dataRange.Style.Alignment.Vertical = XLAlignmentVerticalValues.Top;
-				ws.Column(1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-			}
+						col.Item().Text(tutorial.Title ?? "")
+							.FontSize(16)
+							.Bold();
 
-			// Auto fit
-			ws.Columns().AdjustToContents();
-			ws.Column(3).Width = 60; // mô tả dài thì cho rộng
+						col.Item().Text($"Danh mục: {tutorial.Category?.Name ?? "Chưa có"}")
+							.FontSize(11);
 
-			using var ms = new MemoryStream();
-			wb.SaveAs(ms);
-			return ms.ToArray();
-		}
+						col.Item().LineHorizontal(1).LineColor(Colors.Grey.Medium);
+					});
 
-		private static string Shorten(string? text, int max)
-		{
-			if (string.IsNullOrWhiteSpace(text)) return "";
-			text = text.Replace("\r", " ").Replace("\n", " ").Trim();
-			return text.Length <= max ? text : text.Substring(0, max) + "...";
+					// Content
+					page.Content().PaddingVertical(10).Column(col =>
+					{
+						col.Spacing(10);
+
+						col.Item().Text("Nội dung")
+							.FontSize(13)
+							.SemiBold();
+
+						// Hiển thị đầy đủ, giữ xuống dòng
+						col.Item().Text(tutorial.Content ?? "")
+							.FontSize(11)
+							.LineHeight(1.5f);
+					});
+
+					// Footer
+					page.Footer().AlignCenter().Text(x =>
+					{
+						x.Span("Trang ");
+						x.CurrentPageNumber();
+						x.Span(" / ");
+						x.TotalPages();
+					});
+				});
+			});
+
+			return document.GeneratePdf();
 		}
 	}
 }

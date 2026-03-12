@@ -1,0 +1,38 @@
+﻿@model HuongDanLamDep.Models.Tutorial
+
+@{
+    ViewData["Title"] = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="py-4">
+    <div class="container">
+        <div class="mb-3">
+            <a asp-area="Client" asp-controller="Tutorials" asp-action="Index" class="btn btn-outline-primary btn-sm">
+                ← Quay lại danh sách
+            </a>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1200"
+                 class="card-img-top"
+                 alt="Tutorial image" />
+
+            <div class="card-body">
+                <div class="small text-muted mb-2">
+                    @(Model.Category?.Name ?? "Chưa có danh mục")
+                </div>
+
+                <h1 class="mb-3">@Model.Title</h1>
+
+                <div class="text-muted mb-4">
+                    Bài viết hướng dẫn làm đẹp chi tiết
+                </div>
+
+                <div style="white-space: pre-line; line-height: 1.8;">
+                    @Model.Content
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

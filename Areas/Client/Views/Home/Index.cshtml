@@ -41,6 +41,16 @@
             {
                 @foreach (var item in Model.LatestTutorials)
                 {
+                    var content = item.Content ?? "";
+                    var shortText = content.Length > 120
+                    ? content.Substring(0, 120) + "..."
+                    : content;
+
+                    var previewId = $"preview_{item.TutorialId}";
+                    var fullId = $"full_{item.TutorialId}";
+                    var btnId = $"btn_{item.TutorialId}";
+                    var isLoggedIn = User.Identity != null && User.Identity.IsAuthenticated;
+
                     <div class="col-12 col-md-6 col-lg-4">
                         <div class="card h-100 shadow-sm border-0">
                             <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=800"
@@ -54,24 +64,34 @@
 
                                 <h5 class="card-title">@item.Title</h5>
 
-                                <p class="card-text text-muted">
-                                    @{
-                                        var content = item.Content ?? "";
-                                        var shortText = content.Length > 120
-                                        ? content.Substring(0, 120) + "..."
-                                        : content;
-                                    }
+                                <!-- Nội dung rút gọn -->
+                                <p id="@previewId" class="card-text text-muted" style="white-space: pre-line;">
                                     @shortText
                                 </p>
 
-                                <div class="mt-auto">
-                                    <a asp-area="Client"
-                                       asp-controller="Tutorials"
-                                       asp-action="Details"
-                                       asp-route-id="@item.TutorialId"
-                                       class="btn btn-outline-primary btn-sm">
-                                        Xem chi tiết
-                                    </a>
+                                <!-- Nội dung đầy đủ (ẩn mặc định) -->
+                                <p id="@fullId" class="card-text text-muted d-none" style="white-space: pre-line;">
+                                    @content
+                                </p>
+
+                                <div class="mt-auto d-flex gap-2 flex-wrap">
+                                    @if (isLoggedIn)
+                                    {
+                                        <button id="@btnId"
+                                                type="button"
+                                                class="btn btn-outline-primary btn-sm"
+                                                onclick="toggleTutorialContent('@previewId', '@fullId', '@btnId')">
+                                            Xem chi tiết
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button"
+                                                class="btn btn-outline-primary btn-sm"
+                                                onclick="requireLoginNotice()">
+                                            Xem chi tiết
+                                        </button>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -122,3 +142,29 @@
         </div>
     </div>
 </section>
+
+@section Scripts {
+    <script>
+        function toggleTutorialContent(previewId, fullId, buttonId) {
+            const preview = document.getElementById(previewId);
+            const full = document.getElementById(fullId);
+            const button = document.getElementById(buttonId);
+
+            const isExpanded = !full.classList.contains('d-none');
+
+            if (!isExpanded) {
+                preview.classList.add('d-none');
+                full.classList.remove('d-none');
+                button.innerText = 'Thu gọn';
+            } else {
+                full.classList.add('d-none');
+                preview.classList.remove('d-none');
+                button.innerText = 'Xem chi tiết';
+            }
+        }
+
+        function requireLoginNotice() {
+            alert('Bạn cần đăng nhập để xem toàn bộ nội dung bài viết.');
+        }
+    </script>
+}

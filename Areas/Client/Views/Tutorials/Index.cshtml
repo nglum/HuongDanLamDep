@@ -64,7 +64,7 @@
 
                                 <h5 class="card-title">@item.Title</h5>
 
-                                <p class="card-text text-muted">
+                                <p class="card-text text-muted" style="white-space: pre-line;" >
                                     @{
                                         var content = item.Content ?? "";
                                         var shortText = content.Length > 120 ? content.Substring(0, 120) + "..." : content;
