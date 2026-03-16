@@ -104,17 +104,19 @@
                             <div class="mt-3">
                                 @if (isLoggedIn)
                                 {
+
                                     <button id="@buttonId"
                                             type="button"
-                                            class="btn btn-link p-0 text-decoration-none"
+                                            class="read-more-btn"
                                             onclick="toggleTutorialContent('@previewId', '@fullId', '@buttonId')">
                                         Xem thêm
                                     </button>
+
                                 }
                                 else
                                 {
                                     <button type="button"
-                                            class="btn btn-link p-0 text-decoration-none"
+                                            class="read-more-btn"
                                             onclick="requireLoginNotice('Bạn cần đăng nhập để xem tiếp nội dung bài viết.')">
                                         Xem thêm
                                     </button>

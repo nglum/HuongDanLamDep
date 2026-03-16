@@ -1,82 +1,121 @@
 ﻿@model IEnumerable<HuongDanLamDep.Models.Tutorial>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Quản lý bài viết";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Quản lý bài viết</h1>
+<div class="admin-page-header mb-4">
+    <h1 class="admin-page-title">Quản lý bài viết</h1>
+    <p class="admin-page-subtitle">Quản lý danh sách bài viết hướng dẫn làm đẹp</p>
+</div>
 
-<form method="get" class="mb-3">
-    <input name="search" value="@ViewBag.Search" placeholder="Tìm theo tiêu đề..." />
-    <button type="submit">Tìm</button>
+<form method="get" class="search-bar mb-4">
+    <input type="text"
+           name="search"
+           value="@ViewBag.Search"
+           class="search-input"
+           placeholder="Tìm theo tiêu đề..." />
+
+    <button type="submit" class="search-button">
+        Tìm
+    </button>
 </form>
 
-<p>
-    <a asp-action="Create">Tạo bài viết mới</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Tiêu đề
-            </th>
-            <th>
-                Nội dung
-            </th>
-            <th>
-                Danh mục
-            </th>
-            <th>
-                Chức năng
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td style="white-space: pre-line; max-width: 350px; word-break: break-word;">
-                    @item.Content
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.TutorialId">Sửa bài viết</a> 
-                <a asp-action="Details" asp-route-id="@item.TutorialId">Chi tiết bài viết</a> 
-                    <a asp-action="ExportPdf" asp-route-id="@item.TutorialId">Xuất file PDF</a>
-                <a asp-action="Delete" asp-route-id="@item.TutorialId">Xóa bài viết</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="mb-4">
+    <a asp-action="Create" class="create-tutorial-btn">
+        + Tạo bài viết mới
+    </a>
+</div>
+
+<div class="card shadow-sm border-0 tutorial-table-card">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table tutorial-table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th style="width: 180px;">Tiêu đề</th>
+                        <th>Nội dung</th>
+                        <th style="width: 160px;">Danh mục</th>
+                        <th style="width: 280px;">Chức năng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="fw-semibold text-dark">
+                                @item.Title
+                            </td>
+
+                            <td style="white-space: pre-line; max-width: 450px; word-break: break-word;">
+                                @item.Content
+                            </td>
+
+                            <td>
+                                <span class="tutorial-category-badge">
+                                    @(item.Category?.Name ?? "Chưa có danh mục")
+                                </span>
+                            </td>
+
+                            <td class="tutorial-actions">
+                                <a asp-action="Edit" asp-route-id="@item.TutorialId">
+                                    Sửa
+                                </a>
+
+                                <a asp-action="Details" asp-route-id="@item.TutorialId">
+                                    Chi tiết
+                                </a>
+
+                                <a asp-action="ExportPdf" asp-route-id="@item.TutorialId">
+                                    Xuất PDF
+                                </a>
+
+                                <a asp-action="Delete" asp-route-id="@item.TutorialId">
+                                    Xóa
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 @{
     int currentPage = ViewBag.Page ?? 1;
     int totalPages = ViewBag.TotalPages ?? 1;
     string search = ViewBag.Search as string ?? "";
 }
 
-<div class="mt-3">
-    @if (currentPage > 1)
-    {
-        <a asp-area="Admin"
-           asp-controller="Tutorials"
-           asp-action="Index"
-           asp-route-search="@search"
-           asp-route-page="@(currentPage - 1)">« Prev</a>
-    }
+@if (totalPages > 1)
+{
+    <div class="mt-4 d-flex align-items-center gap-3 flex-wrap">
+        @if (currentPage > 1)
+        {
+            <a asp-area="Admin"
+               asp-controller="Tutorials"
+               asp-action="Index"
+               asp-route-search="@search"
+               asp-route-page="@(currentPage - 1)"
+               class="pagination-link">
+                « Trang trước
+            </a>
+        }
 
-    <span style="margin:0 10px;">Trang @currentPage / @totalPages</span>
+        <span class="pagination-info">Trang @currentPage / @totalPages</span>
 
-    @if (currentPage < totalPages)
-    {
-        <a asp-area="Admin"
-           asp-controller="Tutorials"
-           asp-action="Index"
-           asp-route-search="@search"
-           asp-route-page="@(currentPage + 1)">Next »</a>
-    }
-</div>
+        @if (currentPage < totalPages)
+        {
+            <a asp-area="Admin"
+               asp-controller="Tutorials"
+               asp-action="Index"
+               asp-route-search="@search"
+               asp-route-page="@(currentPage + 1)"
+               class="pagination-link">
+                Trang sau »
+            </a>
+        }
+    </div>
+}

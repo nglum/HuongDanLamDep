@@ -6,9 +6,16 @@
 
 <h1>Danh mục làm đẹp</h1>
 
-<form method="get" class="mb-3">
-    <input name="search" value="@ViewBag.Search" placeholder="Tìm theo tên..." />
-    <button type="submit">Tìm</button>
+<form method="get" class="search-bar mb-4">
+    <input type="text"
+           name="search"
+           value="@ViewBag.Search"
+           class="search-input"
+           placeholder="Tìm theo tên..." />
+
+    <button type="submit" class="search-button">
+        Tìm
+    </button>
 </form>
 
 <p>

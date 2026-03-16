@@ -1,55 +1,78 @@
 ﻿@{
     ViewData["Title"] = "Dashboard";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="d-flex align-items-center justify-content-between mb-3">
+<div class="d-flex align-items-center justify-content-between mb-4">
     <div>
-        <h3 class="mb-0">Quản lý</h3>
-        <div class="text-muted">Tổng quan hệ thống quản trị</div>
+        <div class="welcome-chip mb-2">Trang quản trị LumBeauty</div>
+        <h2 class="dashboard-title mb-1">Quản lý</h2>
+        <div class="dashboard-subtitle">Tổng quan hệ thống quản trị</div>
     </div>
-    <div class="d-flex gap-2">
+
+    <div class="text-muted small">
         Tổng quan số liệu
     </div>
 </div>
 
-<div class="row g-3">
+<div class="row g-4 mb-4">
     <div class="col-12 col-md-4">
-        <div class="card shadow-sm border-0">
+        <div class="card stat-card pink border-0">
             <div class="card-body">
-                <div class="text-muted">Categories</div>
-                <div class="display-6 fw-semibold">@ViewBag.CategoryCount</div>
-                Xem danh sách vào Category </a>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12 col-md-4">
-        <div class="card shadow-sm border-0">
-            <div class="card-body">
-                <div class="text-muted">Tutorials</div>
-                <div class="display-6 fw-semibold">@ViewBag.TutorialCount</div>
-                Xem danh sách vào Tutorial</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12 col-md-4">
-        <div class="card shadow-sm border-0">
-            <div class="card-body">
-                <div class="text-muted">Bình luận</div>
-                <div class="display-6 fw-semibold">@ViewBag.CommentCount</div>
-                
-                Xem danh sách vào Comments
+                <div class="stat-icon">C</div>
+                <div class="stat-label">Danh mục</div>
+                <div class="stat-number">@ViewBag.CategoryCount</div>
+                <a asp-area="Admin" asp-controller="Categories" asp-action="Index" class="text-decoration-none">
+                    Xem danh sách danh mục
                 </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-4">
+        <div class="card stat-card cream border-0">
+            <div class="card-body">
+                <div class="stat-icon">T</div>
+                <div class="stat-label">Bài viết</div>
+                <div class="stat-number">@ViewBag.TutorialCount</div>
+                <a asp-area="Admin" asp-controller="Tutorials" asp-action="Index" class="text-decoration-none">
+                    Xem danh sách bài viết
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-4">
+        <div class="card stat-card lilac border-0">
+            <div class="card-body">
+                <div class="stat-icon">B</div>
+                <div class="stat-label">Bình luận</div>
+                <div class="stat-number">@ViewBag.CommentCount</div>
+                <a asp-area="Admin" asp-controller="Comments" asp-action="Index" class="text-decoration-none">
+                    Xem danh sách bình luận
+                </a>
+            </div>
         </div>
     </div>
 </div>
 
-<hr class="my-4" />
-
-<div class="card border-0 shadow-sm">
-    <div class="card-body">
+<div class="card report-box border-0">
+    <div class="card-body p-4">
         <h5 class="mb-2">Báo cáo</h5>
-        <div class="text-muted mb-3">Xuất báo cáo các bài viết file PDF ở Categories.</div>
+        <p class="text-muted mb-3">
+            Quản trị viên có thể theo dõi bài viết, danh mục và bình luận của người dùng tại đây.
+        </p>
+
+        <div class="d-flex gap-2 flex-wrap">
+            <a asp-area="Admin" asp-controller="Tutorials" asp-action="Index" class="btn btn-primary">
+                Quản lý bài viết
+            </a>
+            <a asp-area="Admin" asp-controller="Categories" asp-action="Index" class="btn btn-outline-primary">
+                Quản lý danh mục
+            </a>
+            <a asp-area="Admin" asp-controller="Comments" asp-action="Index" class="btn btn-outline-primary">
+                Quản lý bình luận
+            </a>
+        </div>
     </div>
 </div>

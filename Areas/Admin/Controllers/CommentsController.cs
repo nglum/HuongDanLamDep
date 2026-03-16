@@ -18,7 +18,6 @@ namespace HuongDanLamDep.Areas.Admin.Controllers
 			_context = context;
 		}
 
-		// GET: Admin/Comments
 		public async Task<IActionResult> Index()
 		{
 			var comments = await _context.Comments
@@ -30,17 +29,9 @@ namespace HuongDanLamDep.Areas.Admin.Controllers
 			return View(comments);
 		}
 
-		// GET: Admin/Comments/Delete/5
-		// Không mở trang riêng, nếu truy cập trực tiếp thì quay về danh sách
-		public IActionResult Delete(int? id)
-		{
-			return RedirectToAction(nameof(Index));
-		}
-
-		// POST: Admin/Comments/Delete/5
-		[HttpPost, ActionName("Delete")]
+		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteConfirmed(int id)
+		public async Task<IActionResult> Delete(int id)
 		{
 			var comment = await _context.Comments.FindAsync(id);
 
