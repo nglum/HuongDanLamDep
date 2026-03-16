@@ -12,7 +12,7 @@
 </form>
 
 <p>
-    <a asp-area="Admin" asp-controller="Categories" asp-action="Create">Create New</a>
+    <a asp-area="Admin" asp-controller="Categories" asp-action="Create">Tạo mục mới</a>
 </p>
 <table class="table">
     <thead>
@@ -30,9 +30,9 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
                 <td>
-                    <a asp-area="Admin" asp-controller="Categories" asp-action="Edit" asp-route-id="@item.CategoryId">Sửa thể loại</a> 
-                    <a asp-area="Admin" asp-controller="Categories" asp-action="Details" asp-route-id="@item.CategoryId">Thông tin bài viết</a> 
-                    <a asp-area="Admin" asp-controller="Categories" asp-action="Delete" asp-route-id="@item.CategoryId">Xóa bài viết</a>
+                    <a asp-area="Admin" asp-controller="Categories" asp-action="Edit" asp-route-id="@item.CategoryId">Sửa mục</a> 
+                    <a asp-area="Admin" asp-controller="Categories" asp-action="Details" asp-route-id="@item.CategoryId">Ngày tạo mục</a> 
+                    <a asp-area="Admin" asp-controller="Categories" asp-action="Delete" asp-route-id="@item.CategoryId">Xóa mục</a>
                 </td>
         </tr>
 }

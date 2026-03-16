@@ -8,5 +8,6 @@ namespace HuongDanLamDep.Models
 
 		[Required(ErrorMessage = "Bạn chưa nhập tên Category")]
 		public string Name { get; set; } = "";
+		public DateTime CreatedAt { get; set; } = DateTime.Now;
 	}
 }

@@ -24,29 +24,33 @@
                             <th style="width: 180px;">Người gửi</th>
                             <th style="width: 220px;">Tên bài viết</th>
                             <th>Nội dung</th>
-                            <th style="width: 100px;"></th>
+                            <th style="width: 120px;">Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td>
-                                    @item.CreatedAt.ToString("dd/MM/yyyy HH:mm")
-                                </td>
-                                <td>
-                                    @(string.IsNullOrWhiteSpace(item.UserName) ? "Người dùng" : item.UserName)
-                                </td>
-                                <td>
-                                    @(item.Tutorial?.Title ?? "Không có bài viết")
-                                </td>
+                                <td>@item.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>@(string.IsNullOrWhiteSpace(item.UserName) ? "Người dùng" : item.UserName)</td>
+                                <td>@(item.Tutorial?.Title ?? "Không có bài viết")</td>
                                 <td style="white-space: pre-line; word-break: break-word;">
                                     @item.Content
                                 </td>
                                 <td>
-                                    <a asp-action="Delete" asp-route-id="@item.CommentId" class="btn btn-sm btn-outline-danger">
-                                        Xóa
-                                    </a>
+                                    <form asp-area="Admin"
+                                          asp-controller="Comments"
+                                          asp-action="Delete"
+                                          asp-route-id="@item.CommentId"
+                                          method="post"
+                                          class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit"
+                                                class="btn btn-sm btn-danger"
+                                                onclick="return confirm('Bạn có chắc chắn muốn xóa bình luận này không?');">
+                                            Xóa
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         }

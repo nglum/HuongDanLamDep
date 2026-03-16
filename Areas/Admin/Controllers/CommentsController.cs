@@ -31,18 +31,10 @@ namespace HuongDanLamDep.Areas.Admin.Controllers
 		}
 
 		// GET: Admin/Comments/Delete/5
-		public async Task<IActionResult> Delete(int? id)
+		// Không mở trang riêng, nếu truy cập trực tiếp thì quay về danh sách
+		public IActionResult Delete(int? id)
 		{
-			if (id == null) return NotFound();
-
-			var comment = await _context.Comments
-				.Include(c => c.Tutorial)
-				.AsNoTracking()
-				.FirstOrDefaultAsync(c => c.CommentId == id);
-
-			if (comment == null) return NotFound();
-
-			return View(comment);
+			return RedirectToAction(nameof(Index));
 		}
 
 		// POST: Admin/Comments/Delete/5
