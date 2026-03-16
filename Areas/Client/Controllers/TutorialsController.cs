@@ -1,4 +1,6 @@
 ﻿using HuongDanLamDep.Data;
+using HuongDanLamDep.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +16,6 @@ namespace HuongDanLamDep.Areas.Client.Controllers
 			_context = context;
 		}
 
-		// Danh sách bài viết
 		public async Task<IActionResult> Index(int? categoryId, string? search)
 		{
 			var query = _context.Tutorials
@@ -47,7 +48,6 @@ namespace HuongDanLamDep.Areas.Client.Controllers
 			return View(tutorials);
 		}
 
-		// Chi tiết bài viết
 		public async Task<IActionResult> Details(int id)
 		{
 			var tutorial = await _context.Tutorials
@@ -62,5 +62,47 @@ namespace HuongDanLamDep.Areas.Client.Controllers
 
 			return View(tutorial);
 		}
+
+
+		[HttpPost]
+		[Authorize]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> AddCommentAjax(int tutorialId, string content)
+		{
+			if (string.IsNullOrWhiteSpace(content))
+			{
+				return Json(new { success = false, message = "Bạn chưa nhập nội dung bình luận." });
+			}
+
+			var tutorial = await _context.Tutorials
+				.FirstOrDefaultAsync(t => t.TutorialId == tutorialId);
+
+			if (tutorial == null)
+			{
+				return Json(new { success = false, message = "Không tìm thấy bài viết để bình luận." });
+			}
+
+			var comment = new Comment
+			{
+				TutorialId = tutorialId,
+				Content = content.Trim(),
+				CreatedAt = DateTime.Now,
+				UserName = User.Identity?.Name
+			};
+
+			_context.Comments.Add(comment);
+			await _context.SaveChangesAsync();
+
+			return Json(new
+			{
+				success = true,
+				message = "Bình luận đã được gửi thành công.",
+				userName = string.IsNullOrWhiteSpace(comment.UserName) ? "Người dùng" : comment.UserName,
+				createdAt = comment.CreatedAt.ToString("dd/MM/yyyy HH:mm"),
+				content = comment.Content,
+				tutorialId = comment.TutorialId
+			});
+		}
+
 	}
 }

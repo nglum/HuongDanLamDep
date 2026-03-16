@@ -10,7 +10,7 @@ namespace HuongDanLamDep.Data
 			: base(options) { }
 
 		public DbSet<Category> Categories { get; set; }
-		public DbSet<Tag> Tags { get; set; }
 		public DbSet<Tutorial> Tutorials { get; set; }
+		public DbSet<Comment> Comments { get; set; }
 	}
 }

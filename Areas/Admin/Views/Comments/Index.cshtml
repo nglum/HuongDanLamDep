@@ -1,0 +1,64 @@
+﻿@model IEnumerable<HuongDanLamDep.Models.Comment>
+
+@{
+    ViewData["Title"] = "Bình luận";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+        <h1 class="mb-1">Bình luận</h1>
+        <div class="text-muted">Quản lý các bình luận được gửi từ phía người dùng</div>
+    </div>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th style="width: 160px;">Thời gian</th>
+                            <th style="width: 180px;">Người gửi</th>
+                            <th style="width: 220px;">Tên bài viết</th>
+                            <th>Nội dung</th>
+                            <th style="width: 100px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @item.CreatedAt.ToString("dd/MM/yyyy HH:mm")
+                                </td>
+                                <td>
+                                    @(string.IsNullOrWhiteSpace(item.UserName) ? "Người dùng" : item.UserName)
+                                </td>
+                                <td>
+                                    @(item.Tutorial?.Title ?? "Không có bài viết")
+                                </td>
+                                <td style="white-space: pre-line; word-break: break-word;">
+                                    @item.Content
+                                </td>
+                                <td>
+                                    <a asp-action="Delete" asp-route-id="@item.CommentId" class="btn btn-sm btn-outline-danger">
+                                        Xóa
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        Chưa có bình luận nào để hiển thị.
+    </div>
+}

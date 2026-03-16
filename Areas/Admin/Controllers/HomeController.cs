@@ -20,7 +20,7 @@ namespace HuongDanLamDep.Areas.Admin.Controllers
 		{
 			ViewBag.CategoryCount = await _context.Categories.CountAsync();
 			ViewBag.TutorialCount = await _context.Tutorials.CountAsync();
-			ViewBag.TagCount = await _context.Tags.CountAsync();
+			ViewBag.CommentCount = await _context.Comments.CountAsync();
 
 			return View();
 		}

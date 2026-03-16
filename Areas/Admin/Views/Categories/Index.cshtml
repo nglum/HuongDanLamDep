@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Quản lý bài viết</h1>
+<h1>Danh mục làm đẹp</h1>
 
 <form method="get" class="mb-3">
     <input name="search" value="@ViewBag.Search" placeholder="Tìm theo tên..." />
@@ -30,7 +30,7 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
                 <td>
-                    <a asp-area="Admin" asp-controller="Categories" asp-action="Edit" asp-route-id="@item.CategoryId">Sửa bài viết</a> 
+                    <a asp-area="Admin" asp-controller="Categories" asp-action="Edit" asp-route-id="@item.CategoryId">Sửa thể loại</a> 
                     <a asp-area="Admin" asp-controller="Categories" asp-action="Details" asp-route-id="@item.CategoryId">Thông tin bài viết</a> 
                     <a asp-area="Admin" asp-controller="Categories" asp-action="Delete" asp-route-id="@item.CategoryId">Xóa bài viết</a>
                 </td>

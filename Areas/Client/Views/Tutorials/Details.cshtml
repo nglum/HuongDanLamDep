@@ -1,36 +1,100 @@
 ﻿@model HuongDanLamDep.Models.Tutorial
+@using HuongDanLamDep.Models
 
 @{
     ViewData["Title"] = Model.Title;
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var comments = ViewBag.Comments as List<Comment> ?? new List<Comment>();
+    var isLoggedIn = User.Identity != null && User.Identity.IsAuthenticated;
 }
 
 <section class="py-4">
     <div class="container">
         <div class="mb-3">
-            <a asp-area="Client" asp-controller="Tutorials" asp-action="Index" class="btn btn-outline-primary btn-sm">
-                ← Quay lại danh sách
+            Index
+            ← Quay lại danh sách
             </a>
         </div>
 
-        <div class="card shadow-sm border-0">
-            <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1200"
-                 class="card-img-top"
-                 alt="Tutorial image" />
+        <div class="row g-4">
+            <!-- Cột trái: bài viết -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm border-0">
+                    https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1200
 
-            <div class="card-body">
-                <div class="small text-muted mb-2">
-                    @(Model.Category?.Name ?? "Chưa có danh mục")
+                    <div class="card-body">
+                        <div class="small text-muted mb-2">
+                            @(Model.Category?.Name ?? "Chưa có danh mục")
+                        </div>
+
+                        <h1 class="mb-3">@Model.Title</h1>
+
+                        <div style="white-space: pre-line; line-height: 1.8;">
+                            @Model.Content
+                        </div>
+                    </div>
                 </div>
+            </div>
 
-                <h1 class="mb-3">@Model.Title</h1>
+            <!-- Cột phải: bình luận -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h4 class="mb-3">Bình luận</h4>
 
-                <div class="text-muted mb-4">
-                    Bài viết hướng dẫn làm đẹp chi tiết
-                </div>
+                        @if (isLoggedIn)
+                        {
+                            <form asp-area="Client"
+                                  asp-controller="Tutorials"
+                                  asp-action="AddComment"
+                                  method="post"
+                                  class="mb-4">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="tutorialId" value="@Model.TutorialId" />
 
-                <div style="white-space: pre-line; line-height: 1.8;">
-                    @Model.Content
+                                <div class="mb-3">
+                                    <textarea name="content"
+                                          class="form-control"
+                                          rows="4"
+                                          placeholder="Nhập bình luận của bạn..."></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-sm">
+                                    Gửi bình luận
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <div class="alert alert-info">
+                                Bạn cần đăng nhập để bình luận.
+                            </div>
+                        }
+
+                        @if (comments.Any())
+                        {
+                            foreach (var c in comments)
+                            {
+                                <div class="border rounded p-3 mb-3 bg-light">
+                                    <div class="small text-muted mb-2">
+                                        @(string.IsNullOrWhiteSpace(c.UserName) ? "Người dùng" : c.UserName)
+                                        • @c.CreatedAt.ToString("dd/MM/yyyy HH:mm")
+                                    </div>
+
+                                    <div style="white-space: pre-line;">
+                                        @c.Content
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="text-muted">
+                                Chưa có bình luận nào cho bài viết này.
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
